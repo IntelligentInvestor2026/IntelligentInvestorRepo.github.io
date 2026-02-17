@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Screener & Intrinsic Value</title>
+
+    <!-- Simple styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+
+        header {
+            background: #1a73e8;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            padding: 8px;
+            width: 200px;
+            margin-top: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #e8e8e8;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Stock Screener & Intrinsic Value Calculator</h1>
+</header>
+
+<div class="container">
+
+    <h2>Filters</h2>
+
+    <label>P/E Ratio (max):</label>
+    <input type="number" id="peFilter" placeholder="e.g. 15">
+
+    <label>Minimum ROE (%):</label>
+    <input type="number" id="roeFilter" placeholder="e.g. 10">
+
+    <label>Max Debt/Equity:</label>
+    <input type="number" id="deFilter" placeholder="e.g. 0.5" step="0.01">
+
+    <button onclick="applyFilters()">Apply Filters</button>
+
+    <h2>Results</h2>
+
+    <table id="stockTable">
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th>Price</th>
+                <th>P/E</th>
+                <th>ROE</th>
+                <th>Debt/Equity</th>
+                <th>Intrinsic Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Stocks will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    // Placeholder stock data (you will replace this with API data later)
+    const stocks = [
+        { ticker: "AAPL", price: 180, pe: 28, roe: 75, de: 1.5, eps: 6.1, book: 4.0 },
+        { ticker: "MSFT", price: 330, pe: 35, roe: 40, de: 0.4, eps: 9.2, book: 15.0 },
+        { ticker: "GOOG", price: 140, pe: 22, roe: 28, de: 0.05, eps: 5.6, book: 20.0 }
+    ];
+
+    // Graham intrinsic value formula
+    function intrinsicValue(eps, book) {
+        return Math.sqrt(22.5 * eps * book).toFixed(2);
+    }
+
+    function applyFilters() {
+        const peMax = parseFloat(document.getElementById("peFilter").value);
+        const roeMin = parseFloat(document.getElementById("roeFilter").value);
+        const deMax = parseFloat(document.getElementById("deFilter").value);
+
+        const filtered = stocks.filter(stock => {
+            return (!peMax || stock.pe <= peMax) &&
+                   (!roeMin || stock.roe >= roeMin) &&
+                   (!deMax || stock.de <= deMax);
+        });
+
+        displayStocks(filtered);
+    }
+
+    function displayStocks(list) {
+        const tableBody = document.querySelector("#stockTable tbody");
+        tableBody.innerHTML = "";
+
+        list.forEach(stock => {
+            const row = `
+                <tr>
+                    <td>${stock.ticker}</td>
+                    <td>$${stock.price}</td>
+                    <td>${stock.pe}</td>
+                    <td>${stock.roe}%</td>
+                    <td>${stock.de}</td>
+                    <td>$${intrinsicValue(stock.eps, stock.book)}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    // Load initial data
+    displayStocks(stocks);
+</script>
+
+</body>
+</html>
