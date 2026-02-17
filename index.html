@@ -2,167 +2,285 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Screener & Intrinsic Value</title>
-
-    <!-- Simple styling -->
+    <title>Stock Summary</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background: #f4f4f4;
-        }
-
-        header {
-            background: #1a73e8;
-            color: white;
+            margin: 0;
             padding: 20px;
+        }
+        h1 {
             text-align: center;
+            color: #333;
         }
-
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        h2 {
-            margin-top: 0;
-        }
-
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-
-        input {
-            padding: 8px;
-            width: 200px;
-            margin-top: 5px;
-        }
-
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 25px;
+            background: white;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
         }
-
         th, td {
-            padding: 10px;
+            padding: 12px;
             border-bottom: 1px solid #ddd;
             text-align: left;
         }
-
         th {
-            background: #e8e8e8;
+            background: #1a73e8;
+            color: white;
+        }
+        tr:hover {
+            background: #f1f1f1;
+        }
+        .buy {
+            color: green;
+            font-weight: bold;
+        }
+        .no {
+            color: #b30000;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
 
-<header>
-    <h1>Stock Screener & Intrinsic Value Calculator</h1>
-</header>
+<h1>Stock Summary</h1>
 
-<div class="container">
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Yearly Intrinsic Value</th>
+            <th>TTM</th>
+            <th>CMP</th>
+            <th>Margin of Safety</th>
+            <th>Comment</th>
+            <th>Source Link</th>
+        </tr>
+    </thead>
 
-    <h2>Filters</h2>
+    <tbody>
+        <tr>
+            <td>PEP</td>
+            <td>PEP</td>
+            <td>134</td>
+            <td>No</td>
+            <td>Target 154.5</td>
+            <td><a href="#">Marketwatch.com</a></td>
+        </tr>
 
-    <label>P/E Ratio (max):</label>
-    <input type="number" id="peFilter" placeholder="e.g. 15">
+        <tr>
+            <td>TMUS</td>
+            <td>TMUS</td>
+            <td>252</td>
+            <td>No</td>
+            <td>Target 320</td>
+            <td><a href="#">Marketbeat.com</a></td>
+        </tr>
 
-    <label>Minimum ROE (%):</label>
-    <input type="number" id="roeFilter" placeholder="e.g. 10">
+        <tr>
+            <td>HON</td>
+            <td>HON</td>
+            <td>217</td>
+            <td>No</td>
+            <td>Target 240, Major support 202</td>
+            <td><a href="#">Yahoo Finance</a></td>
+        </tr>
 
-    <label>Max Debt/Equity:</label>
-    <input type="number" id="deFilter" placeholder="e.g. 0.5" step="0.01">
+        <tr>
+            <td>GOOGL</td>
+            <td>GOOGL</td>
+            <td>200</td>
+            <td>No</td>
+            <td>Major support (165, 150)</td>
+            <td><a href="#">Nasdaq.com</a></td>
+        </tr>
 
-    <button onclick="applyFilters()">Apply Filters</button>
+        <tr>
+            <td>AMD</td>
+            <td>AMD</td>
+            <td>175</td>
+            <td class="buy">BUY</td>
+            <td>Major support (145, 135)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-    <h2>Results</h2>
+        <tr>
+            <td>AMGN</td>
+            <td>AMGN</td>
+            <td>285</td>
+            <td class="buy">BUY</td>
+            <td>Target 350, Major support 270</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-    <table id="stockTable">
-        <thead>
-            <tr>
-                <th>Ticker</th>
-                <th>Price</th>
-                <th>P/E</th>
-                <th>ROE</th>
-                <th>Debt/Equity</th>
-                <th>Intrinsic Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Stocks will be inserted here by JavaScript -->
-        </tbody>
-    </table>
+        <tr>
+            <td>QCOM</td>
+            <td>QCOM</td>
+            <td>153</td>
+            <td>No</td>
+            <td>Target 195</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-</div>
+        <tr>
+            <td>HD</td>
+            <td>HD</td>
+            <td>373</td>
+            <td>No</td>
+            <td>Major support (375, 360)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-<script>
-    // Placeholder stock data (you will replace this with API data later)
-    const stocks = [
-        { ticker: "AAPL", price: 180, pe: 28, roe: 75, de: 1.5, eps: 6.1, book: 4.0 },
-        { ticker: "MSFT", price: 330, pe: 35, roe: 40, de: 0.4, eps: 9.2, book: 15.0 },
-        { ticker: "GOOG", price: 140, pe: 22, roe: 28, de: 0.05, eps: 5.6, book: 20.0 }
-    ];
+        <tr>
+            <td>NVIDIA</td>
+            <td>NVIDIA</td>
+            <td>186</td>
+            <td>No</td>
+            <td>Major support 170, 150</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-    // Graham intrinsic value formula
-    function intrinsicValue(eps, book) {
-        return Math.sqrt(22.5 * eps * book).toFixed(2);
-    }
+        <tr>
+            <td>ADBE</td>
+            <td>ADBE</td>
+            <td>375</td>
+            <td class="buy">BUY</td>
+            <td>Target 630</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-    function applyFilters() {
-        const peMax = parseFloat(document.getElementById("peFilter").value);
-        const roeMin = parseFloat(document.getElementById("roeFilter").value);
-        const deMax = parseFloat(document.getElementById("deFilter").value);
+        <tr>
+            <td>MCD</td>
+            <td>MCD</td>
+            <td>302</td>
+            <td>No</td>
+            <td>Major supports (267, 250)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-        const filtered = stocks.filter(stock => {
-            return (!peMax || stock.pe <= peMax) &&
-                   (!roeMin || stock.roe >= roeMin) &&
-                   (!deMax || stock.de <= deMax);
-        });
+        <tr>
+            <td>UNH</td>
+            <td>UNH</td>
+            <td>375</td>
+            <td class="buy">BUY</td>
+            <td>Target 440, 540</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-        displayStocks(filtered);
-    }
+        <tr>
+            <td>NFLX</td>
+            <td>NFLX</td>
+            <td>1250</td>
+            <td>No</td>
+            <td>Major support (970, 840)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-    function displayStocks(list) {
-        const tableBody = document.querySelector("#stockTable tbody");
-        tableBody.innerHTML = "";
+        <tr>
+            <td>TXN</td>
+            <td>TXN</td>
+            <td>192</td>
+            <td>No</td>
+            <td>Major support (150, 100)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-        list.forEach(stock => {
-            const row = `
-                <tr>
-                    <td>${stock.ticker}</td>
-                    <td>$${stock.price}</td>
-                    <td>${stock.pe}</td>
-                    <td>${stock.roe}%</td>
-                    <td>${stock.de}</td>
-                    <td>$${intrinsicValue(stock.eps, stock.book)}</td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
-    }
+        <tr>
+            <td>SBUX</td>
+            <td>SBUX</td>
+            <td>93</td>
+            <td>No</td>
+            <td>Major supports (75, 60)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
 
-    // Load initial data
-    displayStocks(stocks);
-</script>
+        <tr>
+            <td>IBM</td>
+            <td>IBM</td>
+            <td>234</td>
+            <td>No</td>
+            <td>Target 285</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
+
+        <tr>
+            <td>META</td>
+            <td>META</td>
+            <td>777</td>
+            <td>No</td>
+            <td>Major support (590, 510)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
+
+        <tr>
+            <td>MSFT</td>
+            <td>MSFT</td>
+            <td>528</td>
+            <td>No</td>
+            <td>Major supports (450, 365, 315)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
+
+        <tr>
+            <td>TSLA</td>
+            <td>TSLA</td>
+            <td>340</td>
+            <td>No</td>
+            <td>Target 440, Major support 240</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
+
+        <tr>
+            <td>AAPL</td>
+            <td>AAPL</td>
+            <td>200</td>
+            <td>No</td>
+            <td>Major supports (195, 180)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
+
+        <tr>
+            <td>CAT</td>
+            <td>CAT</td>
+            <td>352</td>
+            <td>No</td>
+            <td>Major supports (360, 300, 288)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
+
+        <tr>
+            <td>INTC</td>
+            <td>INTC</td>
+            <td>22</td>
+            <td>No</td>
+            <td>Not worthy to put more money</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
+
+        <tr>
+            <td>AMZN</td>
+            <td>AMZN</td>
+            <td>205</td>
+            <td>No</td>
+            <td>Major supports (170, 150)</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
+
+        <tr>
+            <td>CRM</td>
+            <td>CRM</td>
+            <td>238</td>
+            <td class="buy">BUY</td>
+            <td>Target 340</td>
+            <td><a href="#">Companies Investor Relations</a></td>
+        </tr>
+
+    </tbody>
+</table>
 
 </body>
 </html>
