@@ -282,7 +282,59 @@
 
     </tbody>
 </table>
+    
+<script>
+    // Fetch real-time data from Yahoo Finance
+    async function fetchStockData(ticker) {
+        const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.quoteResponse.result[0];
+        } catch (error) {
+            console.error("Error fetching data for", ticker, error);
+            return null;
+        }
+    }
+
+    // Graham intrinsic value formula
+    function intrinsicValue(eps, book) {
+        if (!eps || !book) return "N/A";
+        return Math.sqrt(22.5 * eps * book).toFixed(2);
+    }
+
+    // List of stocks you want to track
+    const tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "AMD", "META", "TSLA"];
+
+    async function updateTable() {
+        const tableBody = document.querySelector("#stockTable tbody");
+        tableBody.innerHTML = "";
+
+        for (let t of tickers) {
+            const s = await fetchStockData(t);
+
+            if (!s) continue;
+
+            const row = `
+                <tr>
+                    <td>${s.symbol}</td>
+                    <td>$${s.regularMarketPrice}</td>
+                    <td>${s.trailingPE || "N/A"}</td>
+                    <td>${s.returnOnEquity || "N/A"}</td>
+                    <td>${s.debtToEquity || "N/A"}</td>
+                    <td>$${intrinsicValue(s.epsTrailingTwelveMonths, s.bookValue)}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        }
+    }
+
+    // Run on page load
+    updateTable();
+</script>
 
 </body>
 </html>
+
 
